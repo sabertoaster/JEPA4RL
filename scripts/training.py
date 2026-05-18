@@ -536,7 +536,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-name", "--run_name", dest="run_name", default=None)
     parser.add_argument("--run-group", "--run_group", dest="run_group", default=None)
     parser.add_argument(
-        "--total-updates", "--total_updates", dest="total_updates", type=int, default=1
+        "--total-updates", "--total_updates", dest="total_updates", type=int, default=50
     )
     parser.add_argument(
         "--use-jepa-loss",

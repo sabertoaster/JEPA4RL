@@ -13,7 +13,7 @@ class TrainConfig:
     ema_momentum: float = 0.99
 
     batch_size: int = 64
-    ppo_rollout_steps: int = 2048
+    ppo_rollout_steps: int = 2000
     ppo_epochs: int = 4
     ppo_minibatch_size: int = 64
 

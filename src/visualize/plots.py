@@ -102,14 +102,19 @@ def plot_average_episodic_returns(
 
 
 if __name__ == "__main__":
+    # runs = {
+    #     "J0G1R0": [
+    #         "artifacts/checkpoints/J0G1R0_20260518_212050/episodic_returns.csv",
+    #         # add 4 more runs...
+    #     ],
+    #     "J1G1R0": [...],
+    #     "J1G0R0": [...],
+    #     "J1G0R1": [...],
+    # }
     runs = {
         "J0G1R0": [
-            "artifacts/checkpoints/J0G1R0_20260518_212050/episodic_returns.csv",
-            # add 4 more runs...
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\J0G1R0_20260518_231500\\episodic_returns.csv",
         ],
-        "J1G1R0": [...],
-        "J1G0R0": [...],
-        "J1G0R1": [...],
     }
 
     legend_labels = {
