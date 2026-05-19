@@ -18,6 +18,6 @@ protobuf==7.34.1
 pygame==2.6.1
 PyYAML==6.0.3
 sympy==1.14.0
-torch==2.11.0+cpu
+torch
 typing_extensions==4.15.0
 uv==0.11.7

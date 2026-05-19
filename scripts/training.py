@@ -258,7 +258,7 @@ def export_policy_onnx(
 def train(cfg: TrainConfig | None = None) -> None:
     cfg = cfg or get_default_config()
     cfg = resolve_run_config(cfg)
-    use_cuda = cfg.device == "cuda" and torch.cuda.is_available()
+    use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
 
     if cfg.save_config:
