@@ -431,19 +431,20 @@ def train(cfg: TrainConfig | None = None) -> None:
                         jepa_loss(s_y_pred, s_y)
                         if cfg.use_jepa_loss
                         else s_x.new_zeros(())
-                    )
+                    ) * 2000
                     loss_reg = (
                         variance_regularization(s_x)
                         if cfg.use_reg_loss
                         else s_x.new_zeros(())
-                    )
+                    ) * 10
 
                     total_loss = (
                         loss_jepa
                         + loss_reg
                         + actor_loss
                         + cfg.value_coef * critic_loss
-                        - cfg.entropy_coef * entropy.mean()
+                        - cfg.entropy_coef
+                        * entropy.mean()  # TODO: WTF there's entropy shit here
                     )
 
                     optimizer.zero_grad(set_to_none=True)

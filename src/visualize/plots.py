@@ -68,9 +68,6 @@ def plot_average_episodic_returns(
             if steps.size == 0:
                 continue
 
-            # Dim background line (per run).
-            ax.plot(steps, returns, color=color, alpha=0.15, linewidth=1.0)
-
             # Interpolate to common grid for averaging.
             interp = np.interp(grid, steps, returns, left=np.nan, right=np.nan)
             interp_runs.append(interp)
@@ -81,16 +78,19 @@ def plot_average_episodic_returns(
         stacked = np.vstack(interp_runs)
         mean_returns = np.nanmean(stacked, axis=0)
         mean_steps = grid
+        # Dim background line (per run).
+        ax.plot(mean_steps, mean_returns, color=color, alpha=0.15, linewidth=1.0)
 
         if smooth_window > 1:
             mean_returns = _moving_average(mean_returns, smooth_window)
             mean_steps = mean_steps[smooth_window - 1 :]
 
-        ax.plot(mean_steps, mean_returns, color=color, linewidth=2.5, label=label)
+        ax.plot(mean_steps, mean_returns, color=color, linewidth=1.5, label=label)
 
     ax.set_title("Average Episodic Return")
     ax.set_xlabel("Environment Steps")
     ax.set_ylabel("Return")
+    ax.set_ylim(0, 100)
     ax.set_xlim(0, max_env_steps)
     ax.grid(True, alpha=0.2)
     ax.legend(frameon=False)
@@ -112,16 +112,41 @@ if __name__ == "__main__":
     #     "J1G0R1": [...],
     # }
     runs = {
+        "J1G1R0": [
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp1\\J1G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp2\\J1G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp3\\J1G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp4\\J1G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp5\\J1G1R0\\episodic_returns.csv",
+        ],
         "J0G1R0": [
-            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\J0G1R0_20260518_231500\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp1\\J0G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp2\\J0G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp3\\J0G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp4\\J0G1R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp5\\J0G1R0\\episodic_returns.csv",
+        ],
+        "J1G0R1": [
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp1\\J1G0R1\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp2\\J1G0R1\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp3\\J1G0R1\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp4\\J1G0R1\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp5\\J1G0R1\\episodic_returns.csv",
+        ],
+        "J1G0R0": [
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp1\\J1G0R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp2\\J1G0R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp3\\J1G0R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp4\\J1G0R0\\episodic_returns.csv",
+            "D:\\Projects\\Jepa4RL\\artifacts\\checkpoints\\exp5\\J1G0R0\\episodic_returns.csv",
         ],
     }
 
     legend_labels = {
-        "J1G1R0": "J, grad, R^",
-        "J0G1R0": "J^, grad, R^",
-        "J1G0R1": "J, grad^, R",
-        "J1G0R0": "J, grad^, R^",
+        "J1G1R0": r"$J, \nabla, \hat{R}$",
+        "J0G1R0": r"$\hat{J}, \nabla, \hat{R}$",
+        "J1G0R1": r"$J, \hat{\nabla}, R$",
+        "J1G0R0": r"$J, \hat{\nabla}, \hat{R}$",
     }
 
     colors = {
