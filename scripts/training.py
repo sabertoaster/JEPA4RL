@@ -426,17 +426,17 @@ def train(cfg: TrainConfig | None = None) -> None:
                         unclipped_policy_loss, clipped_policy_loss
                     ).mean()
 
-                    critic_loss = F.mse_loss(new_values, batch["returns"])
+                    critic_loss = F.huber_loss(new_values, batch["returns"])
                     loss_jepa = (
                         jepa_loss(s_y_pred, s_y)
                         if cfg.use_jepa_loss
                         else s_x.new_zeros(())
-                    ) * 2000
+                    )
                     loss_reg = (
                         variance_regularization(s_x)
                         if cfg.use_reg_loss
                         else s_x.new_zeros(())
-                    ) * 10
+                    )
 
                     total_loss = (
                         loss_jepa
