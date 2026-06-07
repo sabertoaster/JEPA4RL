@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class TrainConfig:
-    img_height: int = 40
-    img_width: int = 40
+    img_height: int = 60
+    img_width: int = 60
     num_frames: int = 3
     channels: int = 3
 
@@ -31,7 +31,7 @@ class TrainConfig:
     max_grad_norm: float = 0.5
     total_updates: int = 10
 
-    patch_size: int = 8
+    patch_size: int = 20
     transformer_depth: int = 4
     num_heads: int = 4
     mlp_ratio: float = 4.0
