@@ -49,6 +49,7 @@ class TrainConfig:
 
     save_episodic_returns: bool = True
     episodic_returns_path: str = "episodic_returns.csv"
+    losses_path: str = "losses.csv"
 
 
 def get_default_config() -> TrainConfig:

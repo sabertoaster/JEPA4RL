@@ -162,6 +162,14 @@ def episodic_returns_path(cfg: TrainConfig) -> Path:
     return returns_path
 
 
+def losses_path(cfg: TrainConfig) -> Path:
+    path = Path(cfg.losses_path if hasattr(cfg, "losses_path") else "losses.csv")
+    if not path.is_absolute():
+        path = checkpoint_dir_path(cfg) / path
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
+
+
 def checkpoint_path_for_update(cfg: TrainConfig, update: int) -> Path:
     return checkpoint_dir_path(cfg) / f"jepa_ppo_update_{update:04d}.pt"
 
@@ -292,6 +300,8 @@ def train(cfg: TrainConfig | None = None) -> None:
 
     returns_file = None
     returns_writer = None
+    losses_file = None
+    losses_writer = None
     episode_index = 0
     episode_return = 0.0
     episode_length = 0
@@ -308,6 +318,26 @@ def train(cfg: TrainConfig | None = None) -> None:
         if write_header:
             returns_writer.writeheader()
             returns_file.flush()
+
+    if True:  # Assuming a config flag exists or we just use True
+        l_path = losses_path(cfg)
+        l_write_header = not l_path.exists() or l_path.stat().st_size == 0
+        losses_file = l_path.open("a", newline="")
+        losses_writer = csv.DictWriter(
+            losses_file,
+            fieldnames=[
+                "update",
+                "env_step",
+                "total",
+                "jepa",
+                "reg",
+                "actor",
+                "critic",
+            ],
+        )
+        if l_write_header:
+            losses_writer.writeheader()
+            losses_file.flush()
 
     try:
         for update in range(1, cfg.total_updates + 1):
@@ -490,6 +520,20 @@ def train(cfg: TrainConfig | None = None) -> None:
                 flush=True,
             )
 
+            if losses_writer is not None:
+                losses_writer.writerow(
+                    {
+                        "update": update,
+                        "env_step": total_env_steps,
+                        "total": mean_total,
+                        "jepa": mean_jepa,
+                        "reg": mean_reg,
+                        "actor": mean_actor,
+                        "critic": mean_critic,
+                    }
+                )
+                losses_file.flush()
+
             should_save = cfg.save_every_n_updates > 0 and (
                 update % cfg.save_every_n_updates == 0
             )
@@ -528,6 +572,8 @@ def train(cfg: TrainConfig | None = None) -> None:
     finally:
         if returns_file is not None:
             returns_file.close()
+        if losses_file is not None:
+            losses_file.close()
 
     env.close()
 

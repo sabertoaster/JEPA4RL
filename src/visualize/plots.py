@@ -32,7 +32,17 @@ def _moving_average(values: np.ndarray, window: int) -> np.ndarray:
     kernel = np.ones(window, dtype=np.float32) / float(window)
     return np.convolve(values, kernel, mode="valid")
 
-
+def plot_loss_function(runs: Dict[str, List[str]], ): # TODO: make it load loss 
+    """
+    Plot loss function of Total_loss, Actor-Critic loss, regularization loss, JEPA loss, save each of it as a indepedent plot, save the 4 subplot of those also.
+    Args:
+        runs (Dict[str, List[str]]): Dict of config name -> list of episodic_returns.csv paths.
+        output_path:
+        max_value: cap the y-axis at this value, but if it goes higher then still accept it as the max_value
+    """
+    
+    
+    
 def plot_average_episodic_returns(
     runs: Dict[str, List[str]],
     output_path: str | Path,
